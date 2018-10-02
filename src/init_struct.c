@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:53:25 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/02 15:31:50 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/02 16:33:00 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,22 @@
 
 void		init_textures(t_global *g)
 {
-	g->wall.p_img = mlx_xpm_file_to_image(g->mlx, WALL, &g->wall.x, &g->wall.y);
+	
+	if(!(g->wall.p_img = mlx_xpm_file_to_image(g->mlx, WALL, &g->wall.x, \
+			&g->wall.y)))
+		error("Error : no texture found for wall.");
 	g->wall.img_addr = mlx_get_data_addr(g->wall.p_img, &g->wall.bpp, \
 			&g->wall.size, &g->wall.endian);
-	g->floor.p_img = mlx_xpm_file_to_image(g->mlx, FLOOR, &g->floor.x, \
-			&g->floor.y);
+	if (!(g->floor.p_img = mlx_xpm_file_to_image(g->mlx, FLOOR, &g->floor.x, \
+			&g->floor.y)))
+		error("Error : no texture found for floor.");
 	g->floor.img_addr = mlx_get_data_addr(g->floor.p_img, &g->floor.bpp, \
 			&g->floor.size, &g->floor.endian);
-	g->ceiling.p_img = mlx_xpm_file_to_image(g->mlx, CEILING, \
-			&g->ceiling.x, &g->ceiling.y);
+	if (!(g->ceiling.p_img = mlx_xpm_file_to_image(g->mlx, CEILING, \
+			&g->ceiling.x, &g->ceiling.y)))
+		error("Error : no texture found for ceiling.");
 	g->floor.img_addr = mlx_get_data_addr(g->ceiling.p_img, &g->ceiling.bpp, \
 			&g->ceiling.size, &g->ceiling.endian);
-	printf("Hola !\n");
 }
 
 void		init_global(t_global *global)
@@ -51,9 +55,7 @@ void		init_global(t_global *global)
 	while (++i < THREAD)
 		global->thread[i] = 0;
 	free(title);
-	printf("Doodelidoo !\n");
 	init_textures(global);
-	printf("Hoooooy !\n");
 }
 
 char	**load_map(t_global *g)
