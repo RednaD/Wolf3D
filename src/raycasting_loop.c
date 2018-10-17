@@ -6,93 +6,136 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 15:48:08 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/01 16:40:02 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/17 18:00:34 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/wolf_3d.h"
 
-void	raycast_loop(t_global *global)
+static int	get_color(int id)
 {
-	(void)global;
-	/*
-	int			x;
-	long double cam_x;
-	long double raydir_x;
-	long double	raydir_y;
-	int			map_x;
-	int			map_y;
-	double		sidedist_x;
-	double		sidedist_y;
-	double		deltadist_x;
-	double		deltadist_y;
-	double		perp_walldist;
-	int			step_x;
-	int			step_y;
-	int			hit;
-	int			side;
-	long double	line_height;
-	long double	draw_start;
-	long double draw_end;
+	if (id == 2)
+		return (0x00990099);
+	if (id == 3)
+		return (0x00009900);
+	return (0x00FFFFFF);
+}
 
-	x = -1;
-	cam_x = 0;
-	raydir_x = 0;
-	raydir_y = 0;
-	map_x = global->player.pos_x;
-	map_y = global->player.pos_y;
-	sidedist_x = 0;
-	sidedist_y = 0;
-	deltadist_x = 0;
-	deltadist_y = 0;
-	perp_walldist = 0;
-	step_x = 1;
-	step_y = 1;
-	hit = 0;
-	side = 0;
-	line_height = 0;
-	draw_start = 0;
-	draw_end = 0;
-	while (++x > global->map_x)
+static int		get_thread_id(pthread_t id, pthread_t *thread)
+{
+	int i;
+
+	i = 0;
+	while (i < THREAD && !pthread_equal(id, thread[i]))
+		i++;
+	return (i);
+}
+
+static void	init_ray(t_global *g, t_local *l, int x)
+{
+	l->cam_x = 2 * x / (long double)WIDTH - 1;
+	g->ray.dir_x = g->player.dir_x + g->player.plane_x * l->cam_x;
+	g->ray.dir_y = g->player.dir_y + g->player.plane_y * l->cam_x;
+	g->ray.map_x = (int)g->player.pos_x;
+	g->ray.map_y = (int)g->player.pos_y;
+	g->ray.deltadist_x = sqrt(1 + (g->ray.dir_y * g->ray.dir_y) / \
+							(g->ray.dir_x * g->ray.dir_x));
+	g->ray.deltadist_y = sqrt(1 + (g->ray.dir_x * g->ray.dir_x) / \
+											(g->ray.dir_y * g->ray.dir_y));
+	l->step_x = (g->ray.dir_x < 0) ? -1 : 1;
+	g->ray.sidedist_x = (g->ray.dir_x < 0) ? \
+				((g->player.pos_x - g->ray.map_x) * g->ray.deltadist_x) \
+			: ((g->ray.map_x + 1.0 - g->player.pos_x) * g->ray.deltadist_x);
+	l->step_y = (g->ray.dir_y < 0) ? -1 : 1;
+	g->ray.sidedist_y = (g->ray.dir_y < 0) ? \
+				((g->player.pos_y - g->ray.map_y) * g->ray.deltadist_y) \
+			: ((g->ray.map_y + 1.0 - g->player.pos_y) * g->ray.deltadist_y);
+}
+
+static void	loop(t_global *g, t_local *l)
+{
+	if (g->ray.sidedist_x < g->ray.sidedist_y)
 	{
-		cam_x = 2 * x / global->map_x - 1;
-		raydir_x = global->player.dir_x + global->player.plane_x + cam_x;
-		raydir_y = global->player.dir_y + global->player.plane_y + cam_x;
-		deltadist_x = sqrt(1 + (raydir_y * raydir_y) / (raydir_x * raydir_x));
-		deltadist_x = sqrt(1 + (raydir_x * raydir_x) / (raydir_y * raydir_y));
-		step_x = (raydir_x < 0) ? step_x * -1 : step_x;
-		sidedist_x = (raydir_x < 0) ? \
-								((global->player.pos_x - map_x) * deltadist_x) \
-						: ((map_x + 0.1 - global->player.pos_x) + deltadist_x);
-		step_y = (raydir_y < 0) ? step_y * -1 : step_y;
-		sidedist_y = (raydir_y < 0) ? \
-								((global->player.pos_y - map_y) * deltadist_y) \
-						: ((map_y + 0.1 - global->player.pos_x) + deltadist_y);
-		while (hit == 0)
-		{
-			if (sidedist_x < sidedist_y)
-			{
-				sidedist_x += deltadist_x;
-				map_x += step_x;
-				side = 0;
-			}
-			else
-			{
-				sidedist_y += deltadist_y;
-				map_y += step_y;
-				side = 1;
-			}
-			if (global->map[map_x][map_y] > 0)
-				hit = 1;
-			perp_walldist = (sideo == 0) ? \
-								(map_x - pos_x + (1 - step_x) / 2) / raydir_x \
-								: (map_y - pos_y + (1 - step_y) / 2) / raydir_y;
-			line_height = (HEIGHT / perpwall_dist);
-			draw_start = -line_height / 2 + HEIGHT / 2;
-			draw_start = (draw_start < 0) ? 0 : draw_start;
-			draw_end = line_height / 2 + HEIGHT / 2;
-			draw_end = (draw_end >= HEIGHT - 1) ? HEIGHT - 1 : draw_end;
-			// dessiner ligne verticale de draw_start a draw_end avec couleur X
-		}
-	}*/
+		g->ray.sidedist_x += g->ray.deltadist_x;
+		g->ray.map_x += l->step_x;
+		l->side = 0;
+	}
+	else
+	{
+		g->ray.sidedist_y += g->ray.deltadist_y;
+		g->ray.map_y += l->step_y;
+		l->side = 1;
+	}
+	if (g->map[g->ray.map_y][g->ray.map_x] > 1)
+		l->hit = 1;
+}
+
+static void	set_coord(t_global *g, t_local *l, int x)
+{
+	int			line_height;
+	float		coord_src[2];
+	float		coord_dest[2];
+
+	g->ray.perp_walldist = (l->side == 0) ? \
+		(g->ray.map_x - g->player.pos_x + (1 - l->step_x) / 2) / g->ray.dir_x \
+	: (g->ray.map_y - g->player.pos_y + (1 - l->step_y) / 2) / g->ray.dir_y;
+	line_height = (int)(HEIGHT / g->ray.perp_walldist);
+	coord_src[0] = (float)(-line_height / 2 + HEIGHT / 2);
+	coord_src[0] = (coord_src[0] < 0) ? 0 : coord_src[0];
+	coord_dest[0] = (float)(line_height / 2 + HEIGHT / 2);
+	coord_dest[0] = (coord_dest[0] >= HEIGHT) ? HEIGHT - 1 : coord_dest[0];
+	coord_src[1] = x;
+	coord_dest[1] = x;
+	//draw_h(coord_src, coord_dest, g);
+	g->color = get_color(g->map[g->ray.map_y][g->ray.map_x]);
+	draw_segment(coord_src, coord_dest, g);
+}
+
+void	raycast_loop(int x, int end, t_global *g)
+{
+	t_local		l;
+
+	while (x < WIDTH && x < end)
+	{
+		init_ray(g, &l, x);
+		l.hit = 0;
+		while (l.hit == 0)
+			loop(g, &l);
+		set_coord(g, &l, x);
+		x++;
+	}
+}
+
+static void		*launch_thread(void *data)
+{
+	int			start;
+	int			end;
+	int			padding;
+	t_global	*g;
+
+	g = (t_global *)data;
+	padding = WIDTH / THREAD;
+	start = get_thread_id(pthread_self(), g->thread) * padding;
+	end = start + padding + 1;
+	raycast_loop(start, end, g);
+	pthread_exit(NULL);
+	return (NULL);
+}
+
+void	buh(t_global *g)
+{
+	int i;
+
+	i = -1;
+	if (g->p_img)
+		mlx_destroy_image(g->mlx, g->p_img);
+	g->p_img = mlx_new_image(g->mlx, WIDTH, HEIGHT);
+	g->img_addr = mlx_get_data_addr(g->p_img, &g->bpp, \
+			&g->size, &g->endian);
+	while (++i < THREAD)
+		pthread_create(&g->thread[i], NULL, launch_thread, g);
+	i = -1;
+	while (++i < THREAD)
+		pthread_join(g->thread[i], NULL);
+	mlx_put_image_to_window(g->mlx, g->win, g->p_img, 0, 0);
 }

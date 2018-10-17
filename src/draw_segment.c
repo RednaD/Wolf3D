@@ -12,28 +12,27 @@
 
 #include "../includes/wolf_3d.h"
 
-void		mlx_pixel_put_to_image(t_global *global, int x, int y, \
-																	int color)
+void		mlx_pixel_put_to_image(t_global *global, int x, int y, int color)
 {
 	int i;
 
-	if (global->img.endian == 0)
+	if (global->endian == 0)
 	{
-		i = (global->img.size * y) + (x * (global->img.bpp / 8));
-		global->img.img_addr[i] = mlx_get_color_value(global->mlx, color);
-		global->img.img_addr[i + 1] = mlx_get_color_value(global->mlx, \
+		i = (global->size * y) + (x * (global->bpp / 8));
+		global->img_addr[i] = mlx_get_color_value(global->mlx, color);
+		global->img_addr[i + 1] = mlx_get_color_value(global->mlx, \
 																	color >> 8);
-		global->img.img_addr[i + 2] = mlx_get_color_value(global->mlx, \
+		global->img_addr[i + 2] = mlx_get_color_value(global->mlx, \
 																color >> 16);
 	}
 	else
 	{
-		i = (global->img.size * y) + (x * (global->img.bpp / 8));
-		global->img.img_addr[i] = mlx_get_color_value(global->mlx, \
+		i = (global->size * y) + (x * (global->bpp / 8));
+		global->img_addr[i] = mlx_get_color_value(global->mlx, \
 																color >> 16);
-		global->img.img_addr[i + 1] = mlx_get_color_value(global->mlx, \
+		global->img_addr[i + 1] = mlx_get_color_value(global->mlx, \
 																	color >> 8);
-		global->img.img_addr[i + 2] = mlx_get_color_value(global->mlx, \
+		global->img_addr[i + 2] = mlx_get_color_value(global->mlx, \
 																		color);
 	}
 }
@@ -55,7 +54,7 @@ static void		draw_horizon(float *coord, int *diff, int *inc, \
 			cumul -= diff[1];
 			coord[0] += inc[0];
 		}
-		if ((coord[1] > 0 && coord[1] < WIDTH) && (coord[0] > 0 && coord[0] < \
+		if ((coord[1] >= 0 && coord[1] < WIDTH) && (coord[0] >= 0 && coord[0] < \
 																		HEIGHT))
 			mlx_pixel_put_to_image(global, coord[1], coord[0], \
 														global->color);
@@ -79,7 +78,7 @@ static void		draw_vertical(float *coord, int *diff, int *inc, \
 			cumul -= diff[0];
 			coord[1] += inc[1];
 		}
-		if ((coord[1] > 0 && coord[1] < WIDTH) && (coord[0] > 0 && coord[0] < \
+		if ((coord[1] >= 0 && coord[1] < WIDTH) && (coord[0] >= 0 && coord[0] < \
 																		HEIGHT))
 			mlx_pixel_put_to_image(global, coord[1], coord[0], \
 														global->color);
