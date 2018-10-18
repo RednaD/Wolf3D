@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/17 18:40:46 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/18 15:38:08 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,26 @@ int		get_pos(t_global *g, int key)
 		return (0);
 	if (UP)
 	{
-		printf("pos_x = %Lf, pos_y = %Lf\nvalue = %d\n\n", g->player.pos_x, \
-				g->player.pos_y, g->map[(int)(floor(g->player.pos_y))]\
+		printf("pos_x = %d, pos_y = %d\nvalue = %d\n\n", (int)g->player.pos_x, \
+				(int)g->player.pos_y, g->map[(int)(floor(g->player.pos_y))]\
 				[(int)(floor(g->player.pos_x))]);
-		if (g->map[(int)(floor(g->player.pos_y + g->player.dir_y \
-				* g->player.speed))][(int)(g->player.pos_x)] == 1)
+		if (g->map[(int)(g->player.pos_y)]\
+				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] == 1)
 				g->player.pos_x += g->player.dir_x * g->player.speed;
-		if (g->map[(int)(g->player.pos_y)][(int)(floor(g->player.pos_x \
-				+ g->player.dir_x * g->player.speed))] == 1)
+		if (g->map[(int)(g->player.pos_y + g->player.dir_y * g->player.speed)]\
+				[(int)(g->player.pos_x)] == 1)
 			 g->player.pos_y += g->player.dir_y * g->player.speed;
 	}
-	else
+	else if (DOWN)
 	{
-		if (g->map[(int)(g->player.pos_y - g->player.dir_y \
-				* g->player.speed)][(int)(g->player.pos_x)] == 1)
+		printf("pos_x = %d, pos_y = %d\nvalue = %d\n\n", (int)g->player.pos_x, \
+				(int)g->player.pos_y, g->map[(int)(floor(g->player.pos_y))]\
+				[(int)(floor(g->player.pos_x))]);
+		if (g->map[(int)(g->player.pos_y)]\
+				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] == 1)
 			g->player.pos_x -= g->player.dir_x * g->player.speed;
-	if (g->map[(int)(g->player.pos_y)][(int)(g->player.pos_x \
-				- g->player.dir_x * g->player.speed)] == 1)
+		if (g->map[(int)(g->player.pos_y + g->player.dir_y * g->player.speed)]\
+				[(int)(g->player.pos_x)] == 1)
 		g->player.pos_y -= g->player.dir_y * g->player.speed;
 	}
 	buh(g);
