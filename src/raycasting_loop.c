@@ -6,21 +6,19 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 15:48:08 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/17 18:00:34 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/24 15:38:41 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/wolf_3d.h"
-
-static int	get_color(int id)
-{
-	if (id == 2)
-		return (0x00990099);
-	if (id == 3)
-		return (0x00009900);
-	return (0x00FFFFFF);
-}
-
+   static int	get_color(int id)
+   {
+   if (id == 2)
+   return (0x00990099);
+   if (id == 3)
+   return (0x00009900);
+   return (0x00FFFFFF);
+   }
 static int		get_thread_id(pthread_t id, pthread_t *thread)
 {
 	int i;
@@ -33,23 +31,23 @@ static int		get_thread_id(pthread_t id, pthread_t *thread)
 
 static void	init_ray(t_global *g, t_local *l, int x)
 {
+	g->ray.map_x = (int)g->player.pos_x;
+	g->ray.map_y = (int)g->player.pos_y;
 	l->cam_x = 2 * x / (long double)WIDTH - 1;
 	g->ray.dir_x = g->player.dir_x + g->player.plane_x * l->cam_x;
 	g->ray.dir_y = g->player.dir_y + g->player.plane_y * l->cam_x;
-	g->ray.map_x = (int)g->player.pos_x;
-	g->ray.map_y = (int)g->player.pos_y;
 	g->ray.deltadist_x = sqrt(1 + (g->ray.dir_y * g->ray.dir_y) / \
-							(g->ray.dir_x * g->ray.dir_x));
+			(g->ray.dir_x * g->ray.dir_x));
 	g->ray.deltadist_y = sqrt(1 + (g->ray.dir_x * g->ray.dir_x) / \
-											(g->ray.dir_y * g->ray.dir_y));
+			(g->ray.dir_y * g->ray.dir_y));
 	l->step_x = (g->ray.dir_x < 0) ? -1 : 1;
 	g->ray.sidedist_x = (g->ray.dir_x < 0) ? \
-				((g->player.pos_x - g->ray.map_x) * g->ray.deltadist_x) \
-			: ((g->ray.map_x + 1.0 - g->player.pos_x) * g->ray.deltadist_x);
+						((g->player.pos_x - g->ray.map_x) * g->ray.deltadist_x) \
+						: ((g->ray.map_x + 1.0 - g->player.pos_x) * g->ray.deltadist_x);
 	l->step_y = (g->ray.dir_y < 0) ? -1 : 1;
 	g->ray.sidedist_y = (g->ray.dir_y < 0) ? \
-				((g->player.pos_y - g->ray.map_y) * g->ray.deltadist_y) \
-			: ((g->ray.map_y + 1.0 - g->player.pos_y) * g->ray.deltadist_y);
+						((g->player.pos_y - g->ray.map_y) * g->ray.deltadist_y) \
+						: ((g->ray.map_y + 1.0 - g->player.pos_y) * g->ray.deltadist_y);
 }
 
 static void	loop(t_global *g, t_local *l)
@@ -66,42 +64,98 @@ static void	loop(t_global *g, t_local *l)
 		g->ray.map_y += l->step_y;
 		l->side = 1;
 	}
-	if (g->map[g->ray.map_y][g->ray.map_x] > 1)
+	if (g->map[g->ray.map_y][g->ray.map_x] > 19)
 		l->hit = 1;
 }
 
+void		get_tex(int x, int *tex_type, int *tex_id)
+{
+	if (x >= 10 && x < 20)
+	{
+		*tex_type = 0;
+		*tex_id = x - 10;
+	}
+	else if (x >= 20 && x < 30)
+	{
+		*tex_type = 1;
+		*tex_id = x - 20;
+	}
+	else if (x >= 30 && x < 40)
+	{
+		*tex_type = 2;
+		*tex_id = x - 30;
+	}
+}
+/*
+static void	draw_h(float *coord_src, float *coord_dest, t_global *g, t_local *l)
+{
+	int	y;
+	int	tex_type;
+	int	tex_id;
+	int tex_x;
+	int tex_y;
+
+	tex_type = 0;
+	tex_id = 0;
+	printf("g->ray.map_x = %d, g->ray.map_y = %d\n", g->ray.map_x, g->ray.map_y);
+	get_tex(g->map[g->ray.map_y][g->ray.map_x], &tex_type, &tex_id);
+	printf("%d\n", g->map[g->ray.map_y][g->ray.map_x]);
+	printf("tex_type = %d, tex_id = %d\n", tex_type, tex_id);
+	if (!(g->tex[tex_type][tex_id].p_img))
+		error("Error : texture doesn't exists.");
+	l->wall_x = g->ray.perp_walldist * g->ray.dir_y \
+				+ (l->side == 0 ? g->player.pos_y : g->player.pos_x);
+	l->wall_x -= floor(l->wall_x);
+	tex_x = (int)(l->wall_x * (double)(g->tex[tex_type][tex_id].x));
+	if ((l->side == 0 && g->ray.dir_x > 0))
+		tex_x = g->tex[tex_type][tex_id].x - tex_x - 1;
+	if ((l->side == 1 && g->ray.dir_y < 0))
+		tex_x = g->tex[tex_type][tex_id].x - tex_x - 1;
+	y = coord_src[0] - 1;
+	while (++y < coord_dest[0])
+	{
+		tex_y = (y * 256 - HEIGHT * 128 + l->line_height * 128) / 256;
+		g->img_addr[(int)(coord_src[1]) + y * WIDTH] \
+			= g->tex[tex_type][tex_id].img_addr[(tex_x * \
+					g->tex[tex_type][tex_id].bpp) + (tex_y * g->tex[tex_type][tex_id].x)];
+		   mlx_pixel_put_to_image(g, coord_dest[1], y, \
+		   g->tex[tex_type][tex_id].img_addr[(tex_x ) + (tex_y * g->tex[tex_type][tex_id].x)]);
+	}
+}*/
+
 static void	set_coord(t_global *g, t_local *l, int x)
 {
-	int			line_height;
 	float		coord_src[2];
 	float		coord_dest[2];
 
 	g->ray.perp_walldist = (l->side == 0) ? \
-		(g->ray.map_x - g->player.pos_x + (1 - l->step_x) / 2) / g->ray.dir_x \
-	: (g->ray.map_y - g->player.pos_y + (1 - l->step_y) / 2) / g->ray.dir_y;
-	line_height = (int)(HEIGHT / g->ray.perp_walldist);
-	coord_src[0] = (float)(-line_height / 2 + HEIGHT / 2);
+						   (g->ray.map_x - g->player.pos_x + (1 - l->step_x) / 2) / g->ray.dir_x \
+						   : (g->ray.map_y - g->player.pos_y + (1 - l->step_y) / 2) / g->ray.dir_y;
+	l->line_height = (g->ray.perp_walldist > 0) ? \
+					 (int)(HEIGHT / g->ray.perp_walldist) : HEIGHT;
+	coord_src[0] = (float)(-l->line_height / 2 + HEIGHT / 2);
 	coord_src[0] = (coord_src[0] < 0) ? 0 : coord_src[0];
-	coord_dest[0] = (float)(line_height / 2 + HEIGHT / 2);
+	coord_dest[0] = (float)(l->line_height / 2 + HEIGHT / 2);
 	coord_dest[0] = (coord_dest[0] >= HEIGHT) ? HEIGHT - 1 : coord_dest[0];
 	coord_src[1] = x;
 	coord_dest[1] = x;
-	//draw_h(coord_src, coord_dest, g);
+	//draw_h(coord_src, coord_dest, g, l);
 	g->color = get_color(g->map[g->ray.map_y][g->ray.map_x]);
 	draw_segment(coord_src, coord_dest, g);
 }
 
 void	raycast_loop(int x, int end, t_global *g)
 {
-	t_local		l;
+	t_local		*l;
 
+	l = (t_local*)malloc(sizeof(t_local));
 	while (x < WIDTH && x < end)
 	{
-		init_ray(g, &l, x);
-		l.hit = 0;
-		while (l.hit == 0)
-			loop(g, &l);
-		set_coord(g, &l, x);
+		init_ray(g, l, x);
+		l->hit = 0;
+		while (l->hit == 0)
+			loop(g, l);
+		set_coord(g, l, x);
 		x++;
 	}
 }
@@ -135,7 +189,9 @@ void	buh(t_global *g)
 	while (++i < THREAD)
 		pthread_create(&g->thread[i], NULL, launch_thread, g);
 	i = -1;
+	printf("Bu !\n");
 	while (++i < THREAD)
 		pthread_join(g->thread[i], NULL);
 	mlx_put_image_to_window(g->mlx, g->win, g->p_img, 0, 0);
+	//mlx_put_image_to_window(g->mlx, g->win, g->tex[0][0].p_img, 0, 0);
 }

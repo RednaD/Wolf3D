@@ -19,6 +19,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 # define BUFF_SIZE 10
 
@@ -31,6 +32,7 @@ typedef	struct		s_list
 
 int					error(char *str);
 int					ft_atoi(const char *str);
+int     			ft_between(int a, int b, int c);
 void				ft_bzero(void *s, size_t n);
 int					count_word(const char *s, char c);
 int					ft_isalnum(int c);

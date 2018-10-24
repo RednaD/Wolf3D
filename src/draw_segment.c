@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 11:47:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/03/28 18:54:00 by iporsenn         ###   ########.fr       */
+/*   Updated: 2018/10/20 14:57:55 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,9 @@ static void		draw_vertical(float *coord, int *diff, int *inc, \
 		}
 		if ((coord[1] >= 0 && coord[1] < WIDTH) && (coord[0] >= 0 && coord[0] < \
 																		HEIGHT))
-			mlx_pixel_put_to_image(global, coord[1], coord[0], \
-														global->color);
+			//mlx_pixel_put_to_image(global, coord[1], coord[0], \
+			//											global->color);
+		((int*)global->img_addr)[(int)(coord[1] + coord[0] * WIDTH)] = global->color;
 	}
 }
 

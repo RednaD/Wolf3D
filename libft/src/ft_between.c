@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tablen.c                                        :+:      :+:    :+:   */
+/*   ft_between.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arusso <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/02 16:11:02 by arusso            #+#    #+#             */
-/*   Updated: 2018/02/02 16:12:25 by arusso           ###   ########.fr       */
+/*   Created: 2018/10/03 15:27:31 by iporsenn          #+#    #+#             */
+/*   Updated: 2018/10/03 15:27:34 by iporsenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-size_t	ft_tablen(char **tab)
+int        ft_between(int a, int b, int c)
 {
-	size_t count;
-
-	if (!tab)
-		return (0);
-	count = 0;
-	while (tab[count])
-		count++;
-	return (count);
+    return ((a < b && b < c) ? 1 : 0);
 }

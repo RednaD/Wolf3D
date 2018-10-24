@@ -20,7 +20,7 @@ int		*ft_splitoa(char *str, char c)
 	int		j;
 
 	count = count_word(str, ' ');
-	if (!(dest = (int*)malloc(sizeof(int) * count + 1)))
+	if (!(dest = (int*)malloc(sizeof(int) * count)))
 		return (NULL);
 	i = 0;
 	j = 0;
@@ -33,6 +33,5 @@ int		*ft_splitoa(char *str, char c)
 		while (str[i] != c && str[i])
 			i++;
 	}
-	dest[j] = '\0';
 	return (dest);
 }

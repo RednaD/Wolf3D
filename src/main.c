@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 17:26:24 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/17 17:45:26 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/24 15:30:43 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,7 @@ int		main(int ac, char **av)
 		error("Error : unvalid map file or map file doesn't exist.");
 	init_global(g);
 	init_map(g);
-	int i;
-	int j;
-	i = -1;
-	while (++i < g->max_y)
-	{
-		j = -1;
-		while (++j < g->max_x)
-			ft_putnbr(g->map[i][j]);
-		ft_putendl("");
-	}
 	buh(g);
-	// raycast_loop(g);
-	//mlx_put_image_to_window(g->mlx, g->win, g->tex[2][0].p_img, 0, 0);
 	mlx_hook(g->win, 2, (1L << 0), deal_key, g);
 	mlx_loop(g->mlx);
 	return (0);

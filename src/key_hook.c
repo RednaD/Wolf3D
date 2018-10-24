@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/18 15:38:08 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/24 16:13:52 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,6 @@ int		get_dir(t_global *g, int key)
 	return (1);
 }
 
-int		sprint(t_global *g, int key)
-{
-	if (!(SHIFT))
-		return (0);
-	if (g->player.speed == 0.1)
-		g->player.speed = 0.3;
-	else
-		g->player.speed = 0.1;
-	return (1);
-}
-
 int		get_pos(t_global *g, int key)
 {
 	if (!(UP) && !(DOWN))
@@ -63,11 +52,11 @@ int		get_pos(t_global *g, int key)
 				(int)g->player.pos_y, g->map[(int)(floor(g->player.pos_y))]\
 				[(int)(floor(g->player.pos_x))]);
 		if (g->map[(int)(g->player.pos_y)]\
-				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] == 1)
-				g->player.pos_x += g->player.dir_x * g->player.speed;
+				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] <= 19)
+			g->player.pos_x += g->player.dir_x * g->player.speed;
 		if (g->map[(int)(g->player.pos_y + g->player.dir_y * g->player.speed)]\
-				[(int)(g->player.pos_x)] == 1)
-			 g->player.pos_y += g->player.dir_y * g->player.speed;
+				[(int)(g->player.pos_x)] <= 19)
+			g->player.pos_y += g->player.dir_y * g->player.speed;
 	}
 	else if (DOWN)
 	{
@@ -75,11 +64,11 @@ int		get_pos(t_global *g, int key)
 				(int)g->player.pos_y, g->map[(int)(floor(g->player.pos_y))]\
 				[(int)(floor(g->player.pos_x))]);
 		if (g->map[(int)(g->player.pos_y)]\
-				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] == 1)
+				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] <= 19)
 			g->player.pos_x -= g->player.dir_x * g->player.speed;
 		if (g->map[(int)(g->player.pos_y + g->player.dir_y * g->player.speed)]\
-				[(int)(g->player.pos_x)] == 1)
-		g->player.pos_y -= g->player.dir_y * g->player.speed;
+				[(int)(g->player.pos_x)] <= 19)
+			g->player.pos_y -= g->player.dir_y * g->player.speed;
 	}
 	buh(g);
 	return (1);

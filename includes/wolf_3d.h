@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/17 18:18:04 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/20 16:05:52 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,11 @@
 # define WIDTH_UI 50
 # define HEIGHT_UI 50
 # define THREAD 1
-# define MAX_FUNC 4
 # define SQUARE 16
 # define UP key == 126 || key == 13
 # define DOWN key == 125 || key == 1
 # define LEFT key == 123 || key == 0
 # define RIGHT key == 124 || key == 2
-# define SHIFT key = 56 || key == 60
 # define ESCAPE key != 53
 
 # define NB_FLOOR 1 //3
@@ -63,8 +61,8 @@ typedef struct	s_player
 	long double	dir_y;
 	long double plane_x;
 	long double	plane_y;
-	long double rot;
-	long double speed;
+	long double	rot;
+	long double	speed;
 }				t_player;
 
 typedef	struct	s_color
@@ -94,11 +92,13 @@ typedef	struct	s_local
 	int			step_y;
 	int			hit;
 	int			side;
+	int			line_height;
+	long double	wall_x;
 }				t_local;
 
 typedef struct	s_global
 {
-	t_texture	tex[3][NB_FLOOR];
+	t_texture	tex[3][4];
 	t_rayon		ray;
 	t_player	player;
 	int			fd;
@@ -116,7 +116,7 @@ typedef struct	s_global
 	long		time;
 	long		old_time;
 	int			color;
-	int			(*key_func[MAX_FUNC])(struct s_global*, int);
+	int			(*key_func[3])(struct s_global*, int);
 	int			len_key;
 	pthread_t	thread[THREAD];
 }				t_global;
@@ -133,7 +133,6 @@ void			draw_black_square(int x, int y, t_global *global);
 void			free_parse(int **wall, int len_array);
 int   			get_dir(t_global *g, int key);
 int    			get_pos(t_global *g, int key);
-int				sprint(t_global *g, int key);
 void			init_map(t_global *g);
 void			init_global(t_global *g);
 void			mlx_pixel_put_to_image(t_global *global, int x, int y, \
