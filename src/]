@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 15:48:08 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/25 13:23:54 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/25 13:00:09 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,8 @@ static void	draw_h(float *coord_src, float *coord_dest, t_global *g, t_local *l)
 	printf("tex_type = %d, tex_id = %d\n", tex_type, tex_id);
 	if (!(g->tex[tex_type][tex_id].p_img))
 		error("Error : texture doesn't exists.");
-	l->wall_x = (l->side == 0 ? \
-		g->ray.perp_walldist * g->ray.dir_y + g->player.pos_y \
-		: g->ray.perp_walldist * g->ray.dir_x + g->player.pos_x);
+	l->wall_x = g->ray.perp_walldist * g->ray.dir_y \
+				+ (l->side == 0 ? g->player.pos_y : g->player.pos_x);
 	l->wall_x -= floor(l->wall_x);
 	tex_x = (int)(l->wall_x * (double)(g->tex[tex_type][tex_id].x));
 	if ((l->side == 0 && g->ray.dir_x > 0) \

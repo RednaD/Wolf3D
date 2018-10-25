@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/20 16:05:52 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/24 20:43:59 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef	struct s_texture
 	int			x;
 	int			y;
 	void		*p_img;
-	char		*img_addr;
+	unsigned int	*img_addr;
 	int			bpp;
 	int			size;
 	int			endian;
@@ -105,7 +105,7 @@ typedef struct	s_global
 	void 		*mlx;
 	void		*win;
 	void		*p_img;
-	char		*img_addr;
+	unsigned int *img_addr;
 	int			bpp;
 	int			size;
 	int			endian;
