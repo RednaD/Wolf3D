@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 15:48:08 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/25 13:23:54 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/25 17:33:33 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,43 @@ static void	loop(t_global *g, t_local *l)
 		l->hit = 1;
 }
 
-void		get_tex(int x, int *tex_type, int *tex_id)
+void		get_tex_bonus(t_global *g, int *tex_type, int *tex_id)
 {
-	if (x >= 10 && x < 20)
+	if (g->map[g->ray.map_y][g->ray.map_x] >= 10 && \
+			g->map[g->ray.map_y][g->ray.map_x] < 20)
 	{
 		*tex_type = 0;
-		*tex_id = x - 10;
+		*tex_id = g->map[g->ray.map_y][g->ray.map_x] - 10;
 	}
-	else if (x >= 20 && x < 30)
+	else if (g->map[g->ray.map_y][g->ray.map_x] >= 20 && \
+			g->map[g->ray.map_y][g->ray.map_x] < 30)
 	{
 		*tex_type = 1;
-		*tex_id = x - 20;
+		*tex_id = g->map[g->ray.map_y][g->ray.map_x] - 20;
 	}
-	else if (x >= 30 && x < 40)
+	else if (g->map[g->ray.map_y][g->ray.map_x] >= 30 && \
+			g->map[g->ray.map_y][g->ray.map_x] < 40)
 	{
 		*tex_type = 2;
-		*tex_id = x - 30;
+		*tex_id = g->map[g->ray.map_y][g->ray.map_x] - 30;
+	}
+}
+
+void		get_tex(t_global *g, int *tex_type, int *tex_id, t_local *l)
+{
+	if (g->bonus_tex == 1)
+		get_tex_bonus(g, tex_type, tex_id);
+	else
+	{
+		*tex_type = 1;
+		if (l->side == 0 && g->ray.dir_x > 0)
+			*tex_id = 0;
+		else if (l->side == 0 && g->ray.dir_x <= 0)
+			*tex_id = 1;
+		else if (l->side == 1 && g->ray.dir_y > 0)
+			*tex_id = 2;
+		else
+			*tex_id = 3;
 	}
 }
 
@@ -100,10 +121,7 @@ static void	draw_h(float *coord_src, float *coord_dest, t_global *g, t_local *l)
 
 	tex_type = 0;
 	tex_id = 0;
-	printf("g->ray.map_x = %d, g->ray.map_y = %d\n", g->ray.map_x, g->ray.map_y);
-	get_tex(g->map[g->ray.map_y][g->ray.map_x], &tex_type, &tex_id);
-	printf("%d\n", g->map[g->ray.map_y][g->ray.map_x]);
-	printf("tex_type = %d, tex_id = %d\n", tex_type, tex_id);
+	get_tex(g, &tex_type, &tex_id, l);
 	if (!(g->tex[tex_type][tex_id].p_img))
 		error("Error : texture doesn't exists.");
 	l->wall_x = (l->side == 0 ? \
@@ -195,5 +213,5 @@ void	buh(t_global *g)
 	while (++i < THREAD)
 		pthread_join(g->thread[i], NULL);
 	mlx_put_image_to_window(g->mlx, g->win, g->p_img, 0, 0);
-	//mlx_put_image_to_window(g->mlx, g->win, g->tex[0][0].p_img, 0, 0);
+	mlx_put_image_to_window(g->mlx, g->win, g->tex[1][2].p_img, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:53:25 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/24 20:42:59 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/25 14:04:23 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void		init_global(t_global *g)
 	g->key_func[1] = &get_dir;
 	g->key_func[2] = &get_pos;
 	g->len_key = 3;
+	g->bonus_tex = 0;
 	while (++i < THREAD)
 		g->thread[i] = 0;
 	init_textures(g);

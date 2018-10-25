@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/24 20:43:59 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/25 18:04:04 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define ESCAPE key != 53
 
 # define NB_FLOOR 1 //3
-# define NB_WALL 1 //4
+# define NB_WALL 4
 # define NB_CEILING 1
 
 typedef	struct s_point
@@ -118,6 +118,7 @@ typedef struct	s_global
 	int			color;
 	int			(*key_func[3])(struct s_global*, int);
 	int			len_key;
+	int			bonus_tex;
 	pthread_t	thread[THREAD];
 }				t_global;
 
@@ -140,5 +141,6 @@ void			mlx_pixel_put_to_image(t_global *global, int x, int y, \
 // void			launch_mini_map(t_global *global);
 void			raycast_loop(int x, int end, t_global *g);
 void			texture(t_global *global);
+int				close_mouse(int key, int x, int y, t_global *g);
 
 #endif

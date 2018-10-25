@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 17:26:24 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/24 15:30:43 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/25 18:24:15 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		main(int ac, char **av)
 	init_map(g);
 	buh(g);
 	mlx_hook(g->win, 2, (1L << 0), deal_key, g);
+	mlx_mouse_hook(g->win, close_mouse, g);
 	mlx_loop(g->mlx);
 	return (0);
 }
