@@ -6,7 +6,7 @@
 #    By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/08 14:46:44 by iporsenn          #+#    #+#              #
-#    Updated: 2018/03/08 14:46:47 by iporsenn         ###   ########.fr        #
+#    Updated: 2018/10/26 13:02:33 by arusso           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@ NAME = wolf3d
 SRC_PATH = src/
 SRC_NAME =	aux.c				\
 			check_map.c			\
-			draw_segment.c		\
 			init_struct.c		\
 			key_hook.c			\
 			main.c				\

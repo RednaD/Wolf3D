@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/25 18:04:04 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/26 17:26:49 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@
 # include <pthread.h>
 // # include "../SDL2-2.0.8/include/SDL.h"
 
-# define WIDTH 512
-# define HEIGHT 384
-# define WIDTH_UI 50
-# define HEIGHT_UI 50
+# define WIDTH 600
+# define HEIGHT 400
 # define THREAD 1
 # define SQUARE 16
 # define UP key == 126 || key == 13
@@ -47,7 +45,7 @@ typedef	struct s_texture
 	int			x;
 	int			y;
 	void		*p_img;
-	unsigned int	*img_addr;
+	unsigned int	*data;
 	int			bpp;
 	int			size;
 	int			endian;
@@ -82,7 +80,7 @@ typedef struct	s_rayon
 	long double	sidedist_y;
 	long double	deltadist_x; // distance que le rayon doit parcourir pour passer d'une case a l'autre
 	long double	deltadist_y;
-	long double	perp_walldist; //longueur totale du rayon
+	long double	w_dist; //longueur totale du rayon
 }				t_rayon;
 
 typedef	struct	s_local
@@ -94,6 +92,20 @@ typedef	struct	s_local
 	int			side;
 	int			line_height;
 	long double	wall_x;
+	long double	wall_pos_x;
+	long double	wall_pos_y;
+	long double	floor_x;
+	long double	floor_y;
+	long double	pl_dist;
+	long double	cur_dist;
+	long double	cur_pos;
+	long double	cur_x;
+	long double	cur_y;
+	int			t_type;
+	int			t_id;
+	int			t_x;
+	int			t_y;
+	
 }				t_local;
 
 typedef struct	s_global
@@ -105,7 +117,7 @@ typedef struct	s_global
 	void 		*mlx;
 	void		*win;
 	void		*p_img;
-	unsigned int *img_addr;
+	unsigned int *data;
 	int			bpp;
 	int			size;
 	int			endian;
@@ -141,6 +153,6 @@ void			mlx_pixel_put_to_image(t_global *global, int x, int y, \
 // void			launch_mini_map(t_global *global);
 void			raycast_loop(int x, int end, t_global *g);
 void			texture(t_global *global);
-int				close_mouse(int key, int x, int y, t_global *g);
+int				close_mouse(int key, t_global *g);
 
 #endif

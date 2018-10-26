@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/25 19:32:26 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/26 17:27:22 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,11 @@ int		get_pos(t_global *g, int key)
 	return (1);
 }
 
-int		close_mouse(int key, int x, int y, t_global *g)
+int		close_mouse(int key, t_global *g)
 {
+	(void)key;
 	(void)g;
-	printf("key = %d, x = %d, y = %d\n", key, x, y);
-	//if (key == 1 && (x >= 0 && x <= 20) && (y >= -20 && y <= 0))
-	if (key == 1)
-		exit(1);
+	exit(1);
 	return (0);
 }
 
