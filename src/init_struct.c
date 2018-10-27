@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:53:25 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/26 11:46:30 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 17:01:37 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static void	get_texture(t_global *g, int i, char *path, char *type)
 {
-	printf("path = %s\n", path);
 	if (ft_strequ(type, "wall"))
 	{
-		if (!(g->tex[1][i].p_img = mlx_xpm_file_to_image(g->mlx, path, \
-						&g->tex[1][i].x, &g->tex[1][i].y)))
+		if (!(g->tex[1][i].p_img = mlx_xpm_file_to_image(g->mlx, \
+						path, &g->tex[1][i].x, &g->tex[1][i].y)))
 			error("Error : no texture found for wall.");
-		g->tex[1][i].data = (unsigned int*)mlx_get_data_addr(g->tex[1]\
-				[i].p_img, &g->tex[1][i].bpp, &g->tex[1][i].size, &g->tex[1][i].endian);
+		g->tex[1][i].data = (unsigned int*)mlx_get_data_addr(\
+				g->tex[1][i].p_img, &g->tex[1][i].bpp, \
+				&g->tex[1][i].size, &g->tex[1][i].endian);
 	}
 	else if (ft_strequ(type, "floor"))
 	{
@@ -97,7 +97,8 @@ void		init_global(t_global *g)
 	g->key_func[0] = &close_map;
 	g->key_func[1] = &get_dir;
 	g->key_func[2] = &get_pos;
-	g->len_key = 3;
+	g->key_func[3] = &sprint;
+	g->len_key = MAX_FUNC;
 	g->bonus_tex = 0;
 	while (++i < THREAD)
 		g->thread[i] = 0;

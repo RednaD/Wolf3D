@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/26 17:26:49 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 17:02:43 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@
 # define WIDTH 600
 # define HEIGHT 400
 # define THREAD 1
+# define MAX_FUNC 4
 # define SQUARE 16
 # define UP key == 126 || key == 13
 # define DOWN key == 125 || key == 1
 # define LEFT key == 123 || key == 0
 # define RIGHT key == 124 || key == 2
+# define SHIFT key = 56 || key == 60
 # define ESCAPE key != 53
 
 # define NB_FLOOR 1 //3
@@ -78,8 +80,8 @@ typedef struct	s_rayon
 	int			map_y; //coord de la case dans lequel le rayon se trouve (ray_y)
 	long double	sidedist_x; // distance que le rayon a parcouru depuis la position du joueur
 	long double	sidedist_y;
-	long double	deltadist_x; // distance que le rayon doit parcourir pour passer d'une case a l'autre
-	long double	deltadist_y;
+	long double	delta_x; // distance que le rayon doit parcourir pour passer d'une case a l'autre
+	long double	delta_y;
 	long double	w_dist; //longueur totale du rayon
 }				t_rayon;
 
@@ -128,7 +130,7 @@ typedef struct	s_global
 	long		time;
 	long		old_time;
 	int			color;
-	int			(*key_func[3])(struct s_global*, int);
+	int			(*key_func[MAX_FUNC])(struct s_global*, int);
 	int			len_key;
 	int			bonus_tex;
 	pthread_t	thread[THREAD];
@@ -146,6 +148,8 @@ void			draw_black_square(int x, int y, t_global *global);
 void			free_parse(int **wall, int len_array);
 int   			get_dir(t_global *g, int key);
 int    			get_pos(t_global *g, int key);
+int				sprint(t_global *g, int key);
+int				close_mouse(int key, t_global *g);
 void			init_map(t_global *g);
 void			init_global(t_global *g);
 void			mlx_pixel_put_to_image(t_global *global, int x, int y, \
@@ -153,6 +157,5 @@ void			mlx_pixel_put_to_image(t_global *global, int x, int y, \
 // void			launch_mini_map(t_global *global);
 void			raycast_loop(int x, int end, t_global *g);
 void			texture(t_global *global);
-int				close_mouse(int key, t_global *g);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/26 17:27:22 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 17:03:10 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,17 @@ int		close_mouse(int key, t_global *g)
 	(void)g;
 	exit(1);
 	return (0);
+}
+
+int		sprint(t_global *g, int key)
+{
+	if (!(SHIFT))
+		return (0);
+	if (g->player.speed == 0.1)
+		g->player.speed = 0.2;
+	else
+		g->player.speed = 0.1;
+	return (1);
 }
 
 int		close_map(t_global *g, int key)
