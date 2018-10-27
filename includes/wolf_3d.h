@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/27 18:37:19 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 18:58:43 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define DOWN key == 125 || key == 1
 # define LEFT key == 123 || key == 0
 # define RIGHT key == 124 || key == 2
-# define SHIFT key == 56 || key == 60
+# define SHIFT key == 257 || key == 258
 # define T key == 17
 # define ESCAPE key == 53
 

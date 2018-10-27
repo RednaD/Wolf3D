@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/27 18:40:23 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 18:57:50 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@ int		get_pos(t_global *g, int key)
 		return (0);
 	if (UP)
 	{
-		if (g->map[(int)(g->player.pos_y)]\
-				[(int)(g->player.pos_x + g->player.dir_x * g->player.speed)] <= 19)
+		if (g->map[(int)(g->player.pos_y)][(int)(g->player.pos_x \
+					+ g->player.dir_x * g->player.speed * 2)] <= 19)
 			g->player.pos_x += g->player.dir_x * g->player.speed;
-		if (g->map[(int)(g->player.pos_y + g->player.dir_y * g->player.speed)]\
+		if (g->map[(int)(g->player.pos_y + g->player.dir_y * g->player.speed * 2)]\
 				[(int)(g->player.pos_x)] <= 19)
 			g->player.pos_y += g->player.dir_y * g->player.speed;
 	}
 	else if (DOWN)
 	{
-		if (g->map[(int)(g->player.pos_y)]\
-				[(int)(g->player.pos_x - g->player.dir_x * g->player.speed)] <= 19)
+		if (g->map[(int)(g->player.pos_y)][(int)(g->player.pos_x \
+					- g->player.dir_x * g->player.speed * 2)] <= 19)
 			g->player.pos_x -= g->player.dir_x * g->player.speed;
-		if (g->map[(int)(g->player.pos_y - g->player.dir_y * g->player.speed)]\
+		if (g->map[(int)(g->player.pos_y - g->player.dir_y * g->player.speed * 2)]\
 				[(int)(g->player.pos_x)] <= 19)
 			g->player.pos_y -= g->player.dir_y * g->player.speed;
 	}
@@ -90,6 +90,7 @@ int		close_mouse(t_global *g, int key)
 
 int		sprint(t_global *g, int key)
 {
+	printf("key = %d\n", key);
 	if (!(SHIFT))
 		return (0);
 	if (g->player.speed == 0.1)
