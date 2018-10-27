@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:53:25 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/27 17:01:37 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 18:34:31 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,6 @@ static void	init_textures(t_global *g)
 
 void		init_global(t_global *g)
 {
-	int		i;
-
-	i = -1;
 	g->mlx = mlx_init();
 	g->win = mlx_new_window(g->mlx, WIDTH, HEIGHT, g->name);
 	g->time = 0;
@@ -98,10 +95,8 @@ void		init_global(t_global *g)
 	g->key_func[1] = &get_dir;
 	g->key_func[2] = &get_pos;
 	g->key_func[3] = &sprint;
-	g->len_key = MAX_FUNC;
+	g->key_func[4] = &change_tex;
 	g->bonus_tex = 0;
-	while (++i < THREAD)
-		g->thread[i] = 0;
 	init_textures(g);
 }
 

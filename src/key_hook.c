@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/27 17:03:10 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 18:40:23 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,19 @@ int		get_pos(t_global *g, int key)
 	return (1);
 }
 
-int		close_mouse(int key, t_global *g)
+int		change_tex(t_global *g, int key)
+{
+	if (!(T))
+		return (0);
+	if (g->bonus_tex == 0)
+		g->bonus_tex = 1;
+	else
+		g->bonus_tex = 0;
+	buh(g);
+	return (1);
+}
+
+int		close_mouse(t_global *g, int key)
 {
 	(void)key;
 	(void)g;
@@ -89,7 +101,7 @@ int		sprint(t_global *g, int key)
 
 int		close_map(t_global *g, int key)
 {
-	if (ESCAPE)
+	if (!(ESCAPE))
 		return (0);
 	free_parse(g->map, g->max_y);
 	exit(EXIT_SUCCESS);
@@ -100,7 +112,7 @@ int		deal_key(int key, t_global *g)
 	int i;
 
 	i = 0;
-	while ((i < g->len_key) && !g->key_func[i](g, key))
+	while ((i < MAX_FUNC) && !g->key_func[i](g, key))
 		i++;
 	return (0);
 }
