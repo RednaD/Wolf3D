@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:53:25 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/27 18:34:31 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/26 11:46:30 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ static void	get_texture(t_global *g, int i, char *path, char *type)
 {
 	if (ft_strequ(type, "wall"))
 	{
-		if (!(g->tex[1][i].p_img = mlx_xpm_file_to_image(g->mlx, \
-						path, &g->tex[1][i].x, &g->tex[1][i].y)))
+		if (!(g->tex[1][i].p_img = mlx_xpm_file_to_image(g->mlx, path, \
+											&g->tex[1][i].x, &g->tex[1][i].y)))
 			error("Error : no texture found for wall.");
-		g->tex[1][i].data = (unsigned int*)mlx_get_data_addr(\
-				g->tex[1][i].p_img, &g->tex[1][i].bpp, \
-				&g->tex[1][i].size, &g->tex[1][i].endian);
+		g->tex[1][i].data = (unsigned int*)mlx_get_data_addr(g->tex[1]\
+		[i].p_img, &g->tex[1][i].bpp, &g->tex[1][i].size, &g->tex[1][i].endian);
 	}
 	else if (ft_strequ(type, "floor"))
 	{
@@ -29,31 +28,16 @@ static void	get_texture(t_global *g, int i, char *path, char *type)
 						&g->tex[0][i].x, &g->tex[0][i].y)))
 			error("Error : no texture found for floor.");
 		g->tex[0][i].data = (unsigned int*)mlx_get_data_addr(g->tex[0]\
-				[i].p_img, &g->tex[0][i].bpp, &g->tex[0][i].size, &g->tex[0][i].endian);
+		[i].p_img, &g->tex[0][i].bpp, &g->tex[0][i].size, &g->tex[0][i].endian);
 	}
 	else
 	{
 		if (!(g->tex[2][i].p_img = mlx_xpm_file_to_image(g->mlx, path, \
-						&g->tex[2][i].x, &g->tex[2][i].y)))
+											&g->tex[2][i].x, &g->tex[2][i].y)))
 			error("Error : no texture found for ceiling.");
 		g->tex[2][i].data = (unsigned int*)mlx_get_data_addr(g->tex[2]\
-				[i].p_img, &g->tex[2][i].bpp, &g->tex[2][i].size, &g->tex[2][i].endian);
+		[i].p_img, &g->tex[2][i].bpp, &g->tex[2][i].size, &g->tex[2][i].endian);
 	}
-}
-
-static char	*get_path(int i, char *type)
-{
-	char	*path;
-	char	*tmp;
-
-	path = ft_strjoin("textures/", type);
-	tmp = path;
-	path = ft_strjoin(path, ft_itoa(i));
-	free(tmp);
-	tmp = path;
-	path = ft_strjoin(path, ".xpm");
-	free(tmp);
-	return (path);
 }
 
 static void	init_textures(t_global *g)
@@ -66,41 +50,38 @@ static void	init_textures(t_global *g)
 	{
 		path = get_path(i, "wall");
 		get_texture(g, i, path, "wall");
-		free(path);
+		ft_strdel(&path);
 	}
 	i = -1;
 	while (++i < NB_FLOOR)
 	{
 		path = get_path(i, "floor");
 		get_texture(g, i, path, "floor");
-		free(path);
+		ft_strdel(&path);
 	}
 	i = -1;
 	while (++i < NB_CEILING)
 	{
 		path = get_path(i, "ceiling");
 		get_texture(g, i, path, "ceiling");
-		free(path);
+		ft_strdel(&path);
 	}
 }
 
 void		init_global(t_global *g)
 {
+	int		i;
+
+	i = -1;
 	g->mlx = mlx_init();
 	g->win = mlx_new_window(g->mlx, WIDTH, HEIGHT, g->name);
-	g->time = 0;
-	g->old_time = 0;
-	g->color = 0xFFFFFF;
-	g->key_func[0] = &close_map;
-	g->key_func[1] = &get_dir;
-	g->key_func[2] = &get_pos;
-	g->key_func[3] = &sprint;
-	g->key_func[4] = &change_tex;
 	g->bonus_tex = 0;
+	while (++i < THREAD)
+		g->thread[i] = 0;
 	init_textures(g);
 }
 
-char	**load_map(t_global *g)
+char		**load_map(t_global *g)
 {
 	char	**dest;
 	char	*line;
@@ -119,6 +100,7 @@ char	**load_map(t_global *g)
 		if (ret == -1)
 			error("Nope.");
 		dest[i] = ft_strdup(line);
+		ft_strdel(&line);
 		i++;
 	}
 	dest[i] = NULL;
@@ -126,9 +108,8 @@ char	**load_map(t_global *g)
 	return (dest);
 }
 
-void	init_map(t_global *g)
+void		init_map(t_global *g)
 {
-
 	char	**c_map;
 	size_t	i;
 	size_t	len_tab;

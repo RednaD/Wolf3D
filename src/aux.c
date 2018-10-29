@@ -5,29 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/12 17:27:40 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/06/12 17:27:42 by iporsenn         ###   ########.fr       */
+/*   Created: 2018/10/27 16:18:14 by iporsenn          #+#    #+#             */
+/*   Updated: 2018/10/27 16:18:16 by iporsenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/wolf_3d.h"
 
-void	free_array(char **array, int len_array)
+char	*get_path(int i, char *type)
 {
-	int i;
+	char	*path;
+	char	*tmp;
+	char	*tmp_2;
 
-	i = -1;
-	while (++i > len_array)
-		ft_strdel(&array[i]);
-	free(array);
+	path = ft_strjoin("textures/", type);
+	tmp = path;
+	tmp_2 = ft_itoa(i);
+	path = ft_strjoin(path, tmp_2);
+	free(tmp);
+	free(tmp_2);
+	tmp = path;
+	path = ft_strjoin(path, ".xpm");
+	free(tmp);
+	return (path);
 }
 
-void	free_parse(int **wall, int len_array)
+int		get_thread_id(pthread_t id, pthread_t *thread)
 {
 	int i;
 
-	i = -1;
-	while (++i < len_array)
-		ft_memdel((void**)&wall[i]);
-	// free((void*)&wall);
+	i = 0;
+	while (i < THREAD && !pthread_equal(id, thread[i]))
+		i++;
+	return (i);
 }

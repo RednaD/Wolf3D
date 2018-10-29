@@ -32,20 +32,4 @@ int			count_word(const char *str, char c)
 			i++;
 	}
 	return (count);
-/*	int i;
-	int cpt;
-
-	i = 0;
-	cpt = 0;
-	if (!s || !c)
-		return (0);
-	while (s[i])
-	{
-		if (s[i] == c && !s[i - 1])
-			i++;
-		if ((s[i - 1] != c && s[i] == c) || (!s[i + 1] && s[i] != c))
-			cpt++;
-		i++;
-	}
-	return (cpt);*/
 }

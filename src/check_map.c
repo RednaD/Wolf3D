@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:44:07 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/27 18:55:49 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/20 14:38:41 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	init_player(t_global *g, char *line)
 	g->player.dir_y = 0;
 	g->player.plane_x = 0;
 	g->player.plane_y = 0.66;
-	g->player.rot = 0.05;
-	g->player.speed = 0.1;
+	g->player.rot = 0.021;
+	g->player.speed = 0.05;
 }
 
 int		check_lines(char **line)

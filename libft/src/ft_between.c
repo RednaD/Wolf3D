@@ -12,7 +12,7 @@
 
 #include "../include/libft.h"
 
-int        ft_between(int a, int b, int c)
+int		ft_between(int a, int b, int c)
 {
-    return ((a < b && b < c) ? 1 : 0);
+	return ((a < b && b < c) ? 1 : 0);
 }

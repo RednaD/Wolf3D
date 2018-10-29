@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ../include/libft.h                                            :+:      :+:    :+:   */
+/*   ../include/libft.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -32,7 +32,7 @@ typedef	struct		s_list
 
 int					error(char *str);
 int					ft_atoi(const char *str);
-int     			ft_between(int a, int b, int c);
+int					ft_between(int a, int b, int c);
 void				ft_bzero(void *s, size_t n);
 int					count_word(const char *s, char c);
 int					ft_isalnum(int c);
