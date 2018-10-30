@@ -41,24 +41,20 @@ FLAGS_LIBX = -lmlx -framework OpenGL -framework AppKit -lpthread -D_REENTRANT
 
 .PHONY: all, build, creadir, clean, fclean, lib, re
 
-all: lib $(SDL) $(NAME)
+all: $(NAME)
 
-$(NAME):	creadir $(OBJ)
+$(NAME): $(OBJ)
+	@make -C libft
 	@gcc $(FLAGS) $(FLAGS_LIBX) $(SRC) ./libft/libft.a $(HEADER) -o $(NAME)
 	@echo "\033[32mExe built\033[0m"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@gcc $(FLAGS) -o $@ -c $< 
+	@mkdir -p $(OBJ_PATH)
+	@gcc $(FLAGS) -o $@ -c $<
 
-build : creadir
+build :
 	@gcc $(FLAGS) $(FLAGS_LIBX) $(SRC) ./libft/libft.a $(HEADER) -o $(NAME)
 	@echo "\033[32mExe built\033[0m"
-
-creadir:
-	@mkdir -p $(OBJ_PATH)
-
-lib:
-	@make -C libft
 
 clean:
 	@make clean -C libft

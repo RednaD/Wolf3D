@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:44:07 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/20 14:38:41 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/30 14:38:01 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int		check_borders(int **map, t_point start, int current_x, int current_y)
 {
-	if (!(map[current_y][current_x]))
+	if (!(map[current_y][current_x]) || map[current_y][current_x] < 10)
 		return (1);
-	if (map[current_y][current_x] > 1)
+	if (map[current_y][current_x] > 19)
 		return (0);
-	map[current_y][current_x] = 0;
+	map[current_y][current_x] = 99;
 	return (check_borders(map, start, current_x, current_y - 1)
 			|| check_borders(map, start, current_x - 1, current_y)
 			|| check_borders(map, start, current_x, current_y + 1)
@@ -30,22 +30,30 @@ void	check_start_pos(t_global *g)
 	t_point		start;
 	int			**tmp;
 	int			i;
+	int			j;
 
-	start.x = g->player.pos_x;
-	start.y = g->player.pos_y;
-	if (g->map[start.y][start.x] == 0)
+	start.x = (int)g->player.pos_x;
+	start.y = (int)g->player.pos_y;
+	if (g->map[start.y][start.x] < 10)
 		error("Error : player spawn outside the map.");
-	if (g->map[start.y][start.x] > 1)
+	if (g->map[start.y][start.x] > 19)
 		error("Error : player spawn in a wall.");
-	tmp = (int**)malloc(sizeof(int*) + 1);
-	i = -1;
-	while (g->map[++i])
-		ft_memcpy(tmp, g->map[i], g->max_y);
-	tmp[i] = NULL;
+	if (!(tmp = (int**)malloc(sizeof(int*) * (g->max_y))))
+		error("Error : malloc failed.");
+	j = -1;
+	while (++j < g->max_y)
+	{
+		if (!(tmp[j] = (int*)malloc(sizeof(int) * (g->max_x))))
+			error("Error : malloc failed.");
+		i = -1;
+		while (++i < g->max_x)
+			tmp[j][i] = g->map[j][i];
+	}
 	if (check_borders(tmp, start, start.x, start.y))
-		error("Error : player spawn outside the map.");
-	while (i > -1)
-		free(tmp[i--]);
+		error("Error : invalid map.");
+	i = g->max_y;
+	while (--i > -1)
+		free(tmp[i]);
 	free(tmp);
 }
 

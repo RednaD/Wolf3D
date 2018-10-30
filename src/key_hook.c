@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 17:52:01 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/29 12:12:32 by arusso           ###   ########.fr       */
+/*   Updated: 2018/10/27 15:46:11 by iporsenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,8 @@ int		deal_key(int key, t_global *g)
 	if (RIGHT)
 		g->input.right = 1;
 	if (SHIFT)
-	{
-		if (g->player.speed == 0.05)
-			g->player.speed = 0.2;
-		else
-			g->player.speed = 0.05;
-	}
+		g->player.speed = (g->player.speed == 0.05) ? 0.2 : 0.05;
 	if (T)
-	{
-		if (g->bonus_tex == 0)
-			g->bonus_tex = 1;
-		else
-			g->bonus_tex = 0;
-	}
+		g->bonus_tex = (g->bonus_tex == 0) ? 1 : 0;
 	return (0);
 }
