@@ -12,20 +12,21 @@
 
 #include "../includes/wolf_3d.h"
 
-int		check_borders(int **map, t_point start, int current_x, int current_y)
+static int	check_borders(int **map, t_global *g, int cur_x, int cur_y)
 {
-	if (!(map[current_y][current_x]) || map[current_y][current_x] < 10)
+	if (cur_x >= g->max_x || cur_x < 0 || cur_y >= g->max_y || cur_y < 0 \
+													|| map[cur_y][cur_x] < 10)
 		return (1);
-	if (map[current_y][current_x] > 19)
+	if (map[cur_y][cur_x] > 19)
 		return (0);
-	map[current_y][current_x] = 99;
-	return (check_borders(map, start, current_x, current_y - 1)
-			|| check_borders(map, start, current_x - 1, current_y)
-			|| check_borders(map, start, current_x, current_y + 1)
-			|| check_borders(map, start, current_x + 1, current_y));
+	map[cur_y][cur_x] = 99;
+	return (check_borders(map, g, cur_x, cur_y - 1)
+			|| check_borders(map, g, cur_x - 1, cur_y)
+			|| check_borders(map, g, cur_x, cur_y + 1)
+			|| check_borders(map, g, cur_x + 1, cur_y));
 }
 
-void	check_start_pos(t_global *g)
+void		check_start_pos(t_global *g)
 {
 	t_point		start;
 	int			**tmp;
@@ -34,10 +35,10 @@ void	check_start_pos(t_global *g)
 
 	start.x = (int)g->player.pos_x;
 	start.y = (int)g->player.pos_y;
-	if (g->map[start.y][start.x] < 10)
-		error("Error : player spawn outside the map.");
-	if (g->map[start.y][start.x] > 19)
-		error("Error : player spawn in a wall.");
+	if (start.x >= g->max_x || start.y >= g->max_y || start.x < 1 \
+		|| start.y < 1 || g->map[start.y][start.x] < 10
+		|| g->map[start.y][start.x] > 19)
+		error("Error : player can't spawn.");
 	if (!(tmp = (int**)malloc(sizeof(int*) * (g->max_y))))
 		error("Error : malloc failed.");
 	j = -1;
@@ -49,15 +50,12 @@ void	check_start_pos(t_global *g)
 		while (++i < g->max_x)
 			tmp[j][i] = g->map[j][i];
 	}
-	if (check_borders(tmp, start, start.x, start.y))
+	if (check_borders(tmp, g, start.x, start.y))
 		error("Error : invalid map.");
-	i = g->max_y;
-	while (--i > -1)
-		free(tmp[i]);
-	free(tmp);
+	free_tmp(tmp, g->max_y);
 }
 
-void	init_player(t_global *g, char *line)
+static void	init_player(t_global *g, char *line)
 {
 	int	coord[2];
 
@@ -74,10 +72,10 @@ void	init_player(t_global *g, char *line)
 	g->player.plane_x = 0;
 	g->player.plane_y = 0.66;
 	g->player.rot = 0.021;
-	g->player.speed = 0.05;
+	g->player.speed = 0.04;
 }
 
-int		check_lines(char **line)
+static int	check_lines(char **line)
 {
 	static int	count;
 	int			len;
@@ -94,13 +92,13 @@ int		check_lines(char **line)
 	while ((*line)[++i])
 	{
 		if ((*line)[i] != ' ' && (*line)[i] != '\t')
-			if (((*line)[i] < '0' || (*line)[i] > '9') && (*line)[i] != '-')
+			if (((*line)[i] < '0' || (*line)[i] > '9'))
 				return (0);
 	}
 	return (1);
 }
 
-int		check_map(t_global *g)
+int			check_map(t_global *g)
 {
 	int		ret;
 	char	*line;

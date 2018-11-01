@@ -24,26 +24,26 @@ static void	init_ray(t_global *g, t_local *l, int x)
 	l->ray.delta_y = sqrt(1 + (l->ray.dir_x * l->ray.dir_x) / \
 			(l->ray.dir_y * l->ray.dir_y));
 	l->step_x = (l->ray.dir_x < 0) ? -1 : 1;
-	l->ray.sidedist_x = (l->ray.dir_x < 0) ? \
+	l->ray.side_x = (l->ray.dir_x < 0) ? \
 			((g->player.pos_x - l->ray.map_x) * l->ray.delta_x) \
 			: ((l->ray.map_x + 1.0 - g->player.pos_x) * l->ray.delta_x);
 	l->step_y = (l->ray.dir_y < 0) ? -1 : 1;
-	l->ray.sidedist_y = (l->ray.dir_y < 0) ? \
+	l->ray.side_y = (l->ray.dir_y < 0) ? \
 				((g->player.pos_y - l->ray.map_y) * l->ray.delta_y) \
 				: ((l->ray.map_y + 1.0 - g->player.pos_y) * l->ray.delta_y);
 }
 
 static void	loop(t_global *g, t_local *l)
 {
-	if (l->ray.sidedist_x < l->ray.sidedist_y)
+	if (l->ray.side_x < l->ray.side_y)
 	{
-		l->ray.sidedist_x += l->ray.delta_x;
+		l->ray.side_x += l->ray.delta_x;
 		l->ray.map_x += l->step_x;
 		l->side = 0;
 	}
 	else
 	{
-		l->ray.sidedist_y += l->ray.delta_y;
+		l->ray.side_y += l->ray.delta_y;
 		l->ray.map_y += l->step_y;
 		l->side = 1;
 	}

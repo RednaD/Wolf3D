@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/26 17:26:49 by arusso           ###   ########.fr       */
+/*   Updated: 2018/11/01 16:38:06 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <pthread.h>
+# include <signal.h>
 
 # define WIDTH 1600
 # define HEIGHT 900
@@ -75,13 +76,13 @@ typedef struct		s_rayon
 {
 	long double		dir_x;
 	long double		dir_y;
-	int				map_x; //coord de la case dans lequel le rayon se trouve (ray_x)
-	int				map_y; //coord de la case dans lequel le rayon se trouve (ray_y)
-	long double		sidedist_x; // distance que le rayon a parcouru depuis la position du joueur
-	long double		sidedist_y;
-	long double		delta_x; // distance que le rayon doit parcourir pour passer d'une case a l'autre
+	int				map_x;
+	int				map_y;
+	long double		side_x;
+	long double		side_y;
+	long double		delta_x;
 	long double		delta_y;
-	long double		w_dist; //longueur totale du rayon
+	long double		w_dist;
 }					t_rayon;
 
 typedef	struct		s_local
@@ -154,15 +155,15 @@ int					check_map(t_global *g);
 void				check_start_pos(t_global *g);
 int					deal_key(int key, t_global *global);
 int					deal_key_release(int key, t_global *g);
+void				free_tmp(int **tmp, int i);
 char				*get_path(int i, char *type);
+void				get_texture(t_global *g, int i, char *path, char *type);
+void				get_tex_bonus(t_global *g, t_local *l);
 int					get_thread_id(pthread_t id, pthread_t *thread);
 void				init_map(t_global *g);
 void				init_global(t_global *g);
-void				mlx_pixel_put_to_image(t_global *global, int x, int y, \
-																	int color);
 void				launch_mini_map(t_global *global);
 void				set_coord(t_global *g, t_local *l, int x);
-void				texture(t_global *global);
 void				update_input(t_global *g);
 
 #endif
