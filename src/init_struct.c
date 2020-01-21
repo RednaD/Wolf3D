@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 17:53:25 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/11/01 16:43:36 by arusso           ###   ########.fr       */
+/*   Updated: 2018/11/23 13:58:10 by iporsenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ void		init_global(t_global *g)
 	int		i;
 
 	i = -1;
-	g->mlx = mlx_init();
-	g->win = mlx_new_window(g->mlx, WIDTH, HEIGHT, g->name);
+	if (!(g->mlx = mlx_init()))
+		error("Error : mlx_init failed");
+	if (!(g->win = mlx_new_window(g->mlx, WIDTH, HEIGHT, g->name)))
+		error("Error : mlx_new_window_failed");
 	g->bonus_tex = 0;
 	while (++i < THREAD)
 		g->thread[i] = 0;

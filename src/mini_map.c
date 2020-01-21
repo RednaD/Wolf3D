@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 12:47:50 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/06/25 12:47:52 by iporsenn         ###   ########.fr       */
+/*   Updated: 2018/11/23 14:06:35 by iporsenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void		launch_mini_map(t_global *g)
 
 	if (HEIGHT < 400 || WIDTH < 400)
 		return ;
-	g->mini_map.p_img = mlx_new_image(g->mlx, WIDTH / 4, HEIGHT / 4);
+	if (!(g->mini_map.p_img = mlx_new_image(g->mlx, WIDTH / 4, HEIGHT / 4)))
+		error("Error : mlx_new_image failed");
 	g->mini_map.data = mlx_get_data_addr(g->mini_map.p_img, &g->mini_map.bpp, \
 										&g->mini_map.size, &g->mini_map.endian);
 	i = -1;

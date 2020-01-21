@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 15:48:08 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/10/26 18:29:19 by arusso           ###   ########.fr       */
+/*   Updated: 2018/11/23 14:18:26 by arusso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int			start_wolf(t_global *g)
 		mlx_destroy_image(g->mlx, g->p_img);
 	if (g->mini_map.p_img)
 		mlx_destroy_image(g->mlx, g->mini_map.p_img);
-	g->p_img = mlx_new_image(g->mlx, WIDTH, HEIGHT);
+	if (!(g->p_img = mlx_new_image(g->mlx, WIDTH, HEIGHT)))
+		error("Error : mlx_new_image() failed");
 	g->data = (unsigned int*)mlx_get_data_addr(g->p_img, &g->bpp, \
 			&g->size, &g->endian);
 	while (++i < THREAD)

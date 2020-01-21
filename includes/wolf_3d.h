@@ -6,7 +6,7 @@
 /*   By: iporsenn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:09:45 by iporsenn          #+#    #+#             */
-/*   Updated: 2018/11/01 16:38:06 by arusso           ###   ########.fr       */
+/*   Updated: 2018/11/23 12:02:58 by iporsenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "../libft/include/libft.h"
 # include "../minilibx_macos/mlx.h"
 # include <math.h>
-# include <stdio.h>
 # include <pthread.h>
 # include <signal.h>
 
